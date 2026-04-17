@@ -1,15 +1,13 @@
 {
-  "name": "Hỗ trợ tìm tài liệu",
-  "short_name": "ATM Support",
-  "start_url": "./",
-  "scope": "./",
+  "name": "Hỗ trợ kỹ thuật",
+  "short_name": "Hỗ trợ",
+  "start_url": "/ho-tro-tim-tai-lieu/",
+  "scope": "/ho-tro-tim-tai-lieu/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1565c0",
-  "description": "Ứng dụng hỗ trợ kỹ thuật chạy dạng PWA, có thể thêm ra màn hình chính trên iPhone, Android và máy tính.",
+  "description": "Ứng dụng hỗ trợ kỹ thuật.",
   "orientation": "portrait-primary",
-  "prefer_related_applications": false,
-  "categories": ["productivity", "business", "utilities"],
   "icons": [
     {
       "src": "icons/Icon-192.png",
@@ -20,18 +18,6 @@
       "src": "icons/Icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
-    },
-    {
-      "src": "icons/Icon-maskable-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "icons/Icon-maskable-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable any"
     }
   ]
 }

@@ -18,7 +18,7 @@ Bản Flutter Web/PWA đã được làm gọn:
 ```bash
 flutter clean
 flutter pub get
-flutter build web --release --base-href /ho-tro-tim-tai-lieu/
+flutter build web --release --base-href /tra-loi-atm-pwa/
 ```
 
 ## Deploy GitHub Pages
