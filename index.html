@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <base href="/ho-tro-tim-tai-lieu/">
+  <base href="/bss-support-test/">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -126,8 +126,7 @@
     }
 
     function parseCsv(text) {
-      const lines = text.replace(/^﻿/, '').split(/?
-/).filter(line => line.trim());
+      const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(line => line.trim());
       if (lines.length <= 1) return [];
       return lines.slice(1).map(line => {
         const parts = line.split(';');
