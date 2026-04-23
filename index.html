@@ -1,83 +1,252 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
   <base href="/ho-tro-tim-tai-lieu/">
-
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Ứng dụng hỗ trợ kỹ thuật chạy dạng PWA, có thể thêm ra màn hình chính trên iPhone.">
+  <meta name="description" content="Tra cứu tài liệu hỗ trợ kỹ thuật ATM.">
   <meta name="theme-color" content="#1565c0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="ATM Support">
   <meta name="format-detection" content="telephone=no">
-
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="manifest" href="manifest.json">
-
   <title>Hỗ trợ kỹ thuật ATM</title>
-
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #ffffff;
-      height: 100%;
+    :root {
+      --primary: #1565c0;
+      --primary-soft: #e3f2fd;
+      --border: #d7e0ea;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --radius: 16px;
     }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); min-height: 100%; }
+    body { font-family: Arial, Helvetica, sans-serif; color: var(--text); }
+    .container { max-width: 980px; margin: 0 auto; padding: 20px 16px 40px; }
+    .hero {
+      background: linear-gradient(135deg, #1565c0 0%, #1e88e5 100%);
+      color: #fff; border-radius: 24px; padding: 24px; box-shadow: var(--shadow); margin-bottom: 18px;
     }
-
-    #boot-screen {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #ffffff;
-      color: #1f2937;
-      text-align: center;
-      padding: 24px;
+    .hero h1 { margin: 0 0 8px; font-size: 28px; }
+    .hero p { margin: 0; opacity: 0.95; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; }
+    .controls { display: grid; gap: 12px; margin-bottom: 16px; }
+    .search-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+    input[type="search"] {
+      width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border);
+      font-size: 15px; outline: none; background: #fff;
     }
-
-    #boot-card {
-      max-width: 360px;
+    input[type="search"]:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(21,101,192,0.12); }
+    .button-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    button {
+      border: 1px solid var(--border); background: #fff; color: var(--text); padding: 10px 16px;
+      border-radius: 999px; cursor: pointer; font-weight: 700; transition: 0.2s ease;
     }
-
-    .spinner {
-      width: 42px;
-      height: 42px;
-      margin: 0 auto 16px;
-      border-radius: 50%;
-      border: 4px solid #dbeafe;
-      border-top-color: #1565c0;
-      animation: spin 0.9s linear infinite;
+    button:hover { transform: translateY(-1px); }
+    button.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    button.secondary { background: #fff; }
+    .stats { display: flex; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
+    .list { display: grid; gap: 12px; margin-top: 16px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;
+      box-shadow: var(--shadow);
     }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .title { margin: 0; font-size: 18px; line-height: 1.35; }
+    .badge {
+      flex-shrink: 0; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em; background: var(--primary-soft); color: var(--primary);
+    }
+    .keyword { color: var(--muted); margin: 10px 0 0; font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
+    .actions { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .link-btn {
+      text-decoration: none; background: var(--primary); color: #fff; padding: 10px 14px; border-radius: 12px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .empty, .loading, .error { text-align: center; padding: 28px 16px; color: var(--muted); }
+    .error { color: #b91c1c; }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 24px; }
+      .search-row { grid-template-columns: 1fr; }
+      .card-top { flex-direction: column; }
+      .badge { align-self: flex-start; }
     }
   </style>
 </head>
 <body>
-  <div id="boot-screen">
-    <div id="boot-card">
-      <div class="spinner"></div>
-      <h2>Hỗ trợ kỹ thuật ATM</h2>
-      <p>Đang mở ứng dụng PWA...</p>
-    </div>
+  <div class="container">
+    <section class="hero">
+      <h1>Hỗ trợ kỹ thuật ATM</h1>
+      <p>Tra cứu tài liệu nhanh theo tên, từ khóa và nhóm tài liệu.</p>
+    </section>
+
+    <section class="panel controls">
+      <div class="search-row">
+        <input id="searchInput" type="search" placeholder="Tìm theo tên hoặc từ khóa..." autocomplete="off" />
+        <button id="clearBtn" class="secondary" type="button">Xóa tìm kiếm</button>
+      </div>
+      <div class="button-group" id="typeButtons">
+        <button type="button" data-type="all" class="active">Tất cả</button>
+        <button type="button" data-type="unilo">Unilo</button>
+        <button type="button" data-type="ncr">NCR</button>
+      </div>
+      <div class="stats">
+        <span id="totalCount">Tổng: 0 tài liệu</span>
+        <span id="visibleCount">Hiện: 0 tài liệu</span>
+        <span id="currentType">Bộ lọc: Tất cả</span>
+      </div>
+    </section>
+
+    <div id="status" class="loading">Đang tải dữ liệu...</div>
+    <section id="list" class="list" hidden></section>
   </div>
 
   <script>
-    window.addEventListener('flutter-first-frame', function () {
-      var boot = document.getElementById('boot-screen');
-      if (boot) boot.remove();
+    const state = { data: [], filtered: [], search: '', type: 'all' };
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+    const typeButtons = document.getElementById('typeButtons');
+    const totalCount = document.getElementById('totalCount');
+    const visibleCount = document.getElementById('visibleCount');
+    const currentType = document.getElementById('currentType');
+    const statusEl = document.getElementById('status');
+    const listEl = document.getElementById('list');
+
+    function normalize(value) {
+      return (value ?? '').toString().trim();
+    }
+
+    function parseCsv(text) {
+      const lines = text.replace(/^﻿/, '').split(/?
+/).filter(line => line.trim());
+      if (lines.length <= 1) return [];
+      return lines.slice(1).map(line => {
+        const parts = line.split(';');
+        const title = normalize(parts[0]);
+        const keyword = normalize(parts[1]);
+        const file = normalize(parts[2]);
+        const type = normalize(parts[3]).toLowerCase();
+        return { title, keyword, file, type };
+      }).filter(item => item.title || item.file);
+    }
+
+    function typeLabel(type) {
+      if (type === 'unilo') return 'Unilo';
+      if (type === 'ncr') return 'NCR';
+      return 'Khác';
+    }
+
+    function applyFilters() {
+      const keyword = state.search.toLowerCase();
+      state.filtered = state.data.filter(item => {
+        const matchesType = state.type === 'all' || item.type === state.type;
+        const haystack = [item.title, item.keyword, item.file].join(' ').toLowerCase();
+        const matchesSearch = !keyword || haystack.includes(keyword);
+        return matchesType && matchesSearch;
+      });
+      render();
+    }
+
+    function render() {
+      totalCount.textContent = `Tổng: ${state.data.length} tài liệu`;
+      visibleCount.textContent = `Hiện: ${state.filtered.length} tài liệu`;
+      currentType.textContent = `Bộ lọc: ${state.type === 'all' ? 'Tất cả' : typeLabel(state.type)}`;
+
+      Array.from(typeButtons.querySelectorAll('button')).forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.type === state.type);
+      });
+
+      if (!state.data.length) {
+        statusEl.hidden = false;
+        statusEl.className = 'empty';
+        statusEl.textContent = 'Chưa có dữ liệu tài liệu.';
+        listEl.hidden = true;
+        listEl.innerHTML = '';
+        return;
+      }
+
+      if (!state.filtered.length) {
+        statusEl.hidden = false;
+        statusEl.className = 'empty';
+        statusEl.textContent = 'Không tìm thấy tài liệu phù hợp.';
+        listEl.hidden = true;
+        listEl.innerHTML = '';
+        return;
+      }
+
+      statusEl.hidden = true;
+      listEl.hidden = false;
+      listEl.innerHTML = state.filtered.map(item => `
+        <article class="card">
+          <div class="card-top">
+            <h2 class="title">${escapeHtml(item.title || 'Không có tiêu đề')}</h2>
+            <span class="badge">${escapeHtml(typeLabel(item.type))}</span>
+          </div>
+          ${item.keyword ? `<p class="keyword">${escapeHtml(item.keyword)}</p>` : ''}
+          <div class="actions">
+            <a class="link-btn" href="${escapeAttribute(item.file)}" target="_blank" rel="noopener noreferrer">Mở tài liệu</a>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function escapeAttribute(text) {
+      return escapeHtml(text);
+    }
+
+    searchInput.addEventListener('input', event => {
+      state.search = event.target.value.trim();
+      applyFilters();
     });
+
+    clearBtn.addEventListener('click', () => {
+      state.search = '';
+      searchInput.value = '';
+      applyFilters();
+      searchInput.focus();
+    });
+
+    typeButtons.addEventListener('click', event => {
+      const button = event.target.closest('button[data-type]');
+      if (!button) return;
+      state.type = button.dataset.type;
+      applyFilters();
+    });
+
+    async function loadData() {
+      try {
+        const response = await fetch('assets/assets/documents.csv', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Không tải được documents.csv');
+        const text = await response.text();
+        state.data = parseCsv(text);
+        applyFilters();
+      } catch (error) {
+        statusEl.hidden = false;
+        statusEl.className = 'error';
+        statusEl.textContent = `${error.message}. Vui lòng kiểm tra lại file documents.csv.`;
+        listEl.hidden = true;
+      }
+    }
+
+    loadData();
   </script>
-  <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
